@@ -1,3 +1,4 @@
+import json
 from pyramid.config import Configurator
 
 import os
@@ -10,12 +11,13 @@ Request info:
     request.client_addr: {request.client_addr}
     request.remote_addr: {request.remote_addr}
     request.environ['REMOTE_ADDR']: {REMOTE_ADDR}
-    request.headers['X-Forwarded-For']: {X_Forwarded_For}
+    request.headers: {headers}
 
     """.format(
         request=request,
         REMOTE_ADDR=request.environ['REMOTE_ADDR'],
         X_Forwarded_For=request.headers.get('X-Forwarded-For', 'Not set'),
+        headers=json.dumps(dict(request.headers), indent=4)
     )
 
     return response
